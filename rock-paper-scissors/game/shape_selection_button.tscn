@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=3 uid="uid://b66tcgqv117fd"]
+
+[ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/jitter_shader.gdshader" id="1_8d67l"]
+[ext_resource type="Script" uid="uid://bv8wajw8dttd1" path="res://game/shape_selection_button.gd" id="1_u0a7n"]
+[ext_resource type="Texture2D" uid="uid://dq0ea3kyvb1dm" path="res://common/sprites/rock_pixelated_02.png" id="2_q32a0"]
+[ext_resource type="Texture2D" uid="uid://bb7u6e0bk1fqj" path="res://common/sprites/paper_pixelated_04.png" id="3_8d67l"]
+[ext_resource type="Texture2D" uid="uid://bd3jpj115jqhr" path="res://common/sprites/scissors_pixelated_00.png" id="4_0cx1e"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0cx1e"]
+shader = ExtResource("1_8d67l")
+shader_parameter/shaking = true
+shader_parameter/amplitude = 1.5
+shader_parameter/noise_scale = 30.0
+shader_parameter/noise_speed = 5.0
+
+[node name="ShapeSelectionButton" type="Control"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_u0a7n")
+shapes_icons = Dictionary[int, Texture2D]({
+0: ExtResource("2_q32a0"),
+1: ExtResource("3_8d67l"),
+2: ExtResource("4_0cx1e")
+})
+
+[node name="Button" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="ButtonIcon" type="TextureRect" parent="Button"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_0cx1e")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_q32a0")
+
+[node name="HoverBackground00" type="TextureRect" parent="Button"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HoverBackground01" type="TextureRect" parent="Button"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

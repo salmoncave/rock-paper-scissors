@@ -13,3 +13,8 @@ config_version=5
 config/name="rock-paper-scissors"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="uid://bu3vnl5hr2q6r"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
