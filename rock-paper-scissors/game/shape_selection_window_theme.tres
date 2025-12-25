@@ -1,0 +1,12 @@
+[gd_resource type="Theme" format=3 uid="uid://dqjnhgawjp3o2"]
+
+[resource]
+RichTextLabelTitle/base_type = &"RichTextLabel"
+RichTextLabelTitle/colors/default_color = Color(0, 0, 0, 1)
+RichTextLabelTitle/colors/font_outline_color = Color(1, 1, 1, 1)
+RichTextLabelTitle/colors/font_shadow_color = Color(1, 1, 1, 1)
+RichTextLabelTitle/constants/outline_size = 10
+RichTextLabelTitle/constants/shadow_offset_x = 3
+RichTextLabelTitle/constants/shadow_offset_y = 3
+RichTextLabelTitle/constants/shadow_outline_size = 15
+RichTextLabelTitle/font_sizes/normal_font_size = 96
