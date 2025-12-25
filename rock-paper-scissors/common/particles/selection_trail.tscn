@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=3 uid="uid://8iqkbiyn4pev"]
+
+[ext_resource type="Texture2D" uid="uid://r1kqt3dd6ern" path="res://common/sprites/star.png" id="1_be5jq"]
+
+[sub_resource type="Curve" id="Curve_be5jq"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_1lqb5"]
+curve = SubResource("Curve_be5jq")
+
+[sub_resource type="Gradient" id="Gradient_be5jq"]
+offsets = PackedFloat32Array(0, 0.34583333)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1lqb5"]
+gradient = SubResource("Gradient_be5jq")
+
+[sub_resource type="Curve" id="Curve_1lqb5"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_20pkb"]
+curve = SubResource("Curve_1lqb5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1lqb5"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(32, 1, 1)
+angle_min = -179.99998
+angle_max = 180.00002
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 25.0
+initial_velocity_max = 100.0
+angular_velocity_min = -90.000015
+angular_velocity_max = 89.999985
+gravity = Vector3(0, 98, 0)
+scale_min = 0.25
+scale_max = 0.75
+scale_curve = SubResource("CurveTexture_20pkb")
+color_ramp = SubResource("GradientTexture1D_1lqb5")
+alpha_curve = SubResource("CurveTexture_1lqb5")
+
+[node name="SelectionTrail" type="GPUParticles2D"]
+emitting = false
+amount = 20
+texture = ExtResource("1_be5jq")
+lifetime = 2.0
+explosiveness = 0.25
+visibility_rect = Rect2(-100, -100, 200, 400)
+process_material = SubResource("ParticleProcessMaterial_1lqb5")

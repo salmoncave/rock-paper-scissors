@@ -23,4 +23,5 @@ alpha_curve = SubResource("CurveTexture_47wg0")
 emitting = false
 amount = 24
 texture = ExtResource("1_xffux")
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_s7um5")

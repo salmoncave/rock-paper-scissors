@@ -1,4 +1,4 @@
-class_name GameProcessWindow extends Control
+class_name RoundProcess extends Control
 
 signal players_tied_round
 signal player_1_won_round

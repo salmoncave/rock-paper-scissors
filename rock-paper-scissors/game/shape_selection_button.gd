@@ -20,11 +20,12 @@ var active: bool = false
 @onready var button_icon: TextureRect = %ButtonIcon
 @onready var hover_background_00: TextureRect = %HoverBackground00
 @onready var hover_background_01: TextureRect = %HoverBackground01
-@onready var gpu_particles_2d: GPUParticles2D = %GPUParticles2D
+@onready var hover_gpu_particles_2d: GPUParticles2D = %HoverGPUParticles2D
+@onready var selection_trail_gpu_particles_2d: GPUParticles2D = %SelectionTrailGPUParticles2D
 
 
 func _ready() -> void:
-	_create_selection_button_for_choice(shape)
+	_create_selection_button_for_shape(shape)
 	_start_passive_hover_tween_loop()
 	hover_background_00.visible = false
 	hover_background_01.visible = false
@@ -32,14 +33,14 @@ func _ready() -> void:
 func activate() -> void:
 	hover_background_00.modulate = active_modulate_00
 	hover_background_01.modulate = active_modulate_01
-	gpu_particles_2d.emitting = true
+	hover_gpu_particles_2d.emitting = true
 
 func deactivate() -> void:
 	_stop_active_hover_tween()
 	_start_passive_hover_tween_loop()
-	gpu_particles_2d.emitting = false
+	hover_gpu_particles_2d.emitting = false
 
-func _create_selection_button_for_choice(selected_shape: Main.GameShapes) -> void:
+func _create_selection_button_for_shape(selected_shape: Main.GameShapes) -> void:
 	button_icon.texture = shapes_icons[selected_shape]
 	shape = selected_shape
 	
