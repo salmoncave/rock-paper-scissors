@@ -38,7 +38,7 @@ func peer_connected(id):
 #Gets called on the sever and client
 func peer_disconnected(id):
 	print("player disconnected " + str(id))
-	var removed = game_manager.players.erase(id)
+	var removed = GameManager.players.erase(id)
 	var players = get_tree().get_nodes_in_group("player")
 	for i in players:
 		if i.name == str(id):
@@ -62,8 +62,8 @@ func connection_failed():
 @rpc("any_peer")
 func send_player_infomation(name,id):
 	#if this is a unquie name/ hasn't been put in the global script add it
-	if !game_manager.players.has(id):
-		game_manager.players[id]={
+	if !GameManager.players.has(id):
+		GameManager.players[id]={
 			"name" : name, 
 			"id" : id , 
 			"score" : 0
@@ -71,8 +71,8 @@ func send_player_infomation(name,id):
 	# Tells the server/host to go through every player in the server list
 	# and update everyone on the server of the new person who has join. 
 	if multiplayer.is_server():
-		for i in game_manager.players:
-			send_player_infomation.rpc(game_manager.players[i].name, i)
+		for i in GameManager.players:
+			send_player_infomation.rpc(GameManager.players[i].name, i)
 
 #This is an rpc, force every machien to call this 
 @rpc("any_peer","call_local")
