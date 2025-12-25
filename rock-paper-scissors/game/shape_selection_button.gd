@@ -1,6 +1,6 @@
 class_name ShapeSelectionButton extends Control
 
-signal shape_selection_button_pressed(chosen_shape: Main.GameShapes)
+signal shape_selection_button_pressed(chosen_button: Button, chosen_shape: Main.GameShapes)
 
 @export var shapes_icons: Dictionary[Main.GameShapes, Texture2D]
 
@@ -8,6 +8,8 @@ signal shape_selection_button_pressed(chosen_shape: Main.GameShapes)
 
 var _active_hover_tween: Tween
 var _passive_hover_tween: Tween
+
+var active: bool = false
 
 @onready var button: Button = %Button
 @onready var button_icon: TextureRect = %ButtonIcon
@@ -21,13 +23,17 @@ func _ready() -> void:
 	hover_background_00.visible = false
 	hover_background_01.visible = false
 
+func deactivate() -> void:
+	_stop_active_hover_tween()
+	_start_passive_hover_tween_loop()
+
 func _create_selection_button_for_choice(selected_shape: Main.GameShapes) -> void:
 	button_icon.texture = shapes_icons[selected_shape]
 	shape = selected_shape
 	
 
 func _on_button_pressed() -> void:
-	shape_selection_button_pressed.emit(shape)
+	shape_selection_button_pressed.emit(self, shape)
 	
 
 func _start_passive_hover_tween_loop() -> void:
@@ -42,6 +48,8 @@ func _start_passive_hover_tween_loop() -> void:
 		#starting_pos_offset_y = -hover_pos_offset_y
 	#else:
 		#starting_pos_offset_y = hover_pos_offset_y
+	
+	starting_pos_offset_y = randf_range(-hover_pos_offset_y, hover_pos_offset_y)
 	
 	button_icon.position.y = starting_pos_offset_y
 	
@@ -123,5 +131,6 @@ func _on_button_mouse_entered() -> void:
 
 
 func _on_button_mouse_exited() -> void:
-	_stop_active_hover_tween()
-	_start_passive_hover_tween_loop()
+	#print(active)
+	if !active:
+		deactivate()

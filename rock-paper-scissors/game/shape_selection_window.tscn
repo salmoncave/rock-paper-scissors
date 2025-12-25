@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxqtdwvgrb53d"]
+[gd_scene load_steps=7 format=3 uid="uid://bxqtdwvgrb53d"]
 
 [ext_resource type="Theme" uid="uid://dqjnhgawjp3o2" path="res://game/shape_selection_window_theme.tres" id="1_e8ho0"]
 [ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/jitter_shader.gdshader" id="1_lifgb"]
 [ext_resource type="Texture2D" uid="uid://bb1wr6jpwm3oe" path="res://common/sprites/Space Background (6).png" id="2_e8ho0"]
+[ext_resource type="Script" uid="uid://ej750cb8id0u" path="res://game/shape_selection_window.gd" id="2_i8n8p"]
 [ext_resource type="PackedScene" uid="uid://b66tcgqv117fd" path="res://game/shape_selection_button.tscn" id="4_yn6nj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yn6nj"]
@@ -20,6 +21,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_e8ho0")
+script = ExtResource("2_i8n8p")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_yn6nj")
@@ -54,24 +56,25 @@ fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ShapeButtonHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 64
 alignment = 1
 
-[node name="ShapeSelectionButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_yn6nj")]
+[node name="ShapeSelectionButton" parent="MarginContainer/VBoxContainer/ShapeButtonHBoxContainer" instance=ExtResource("4_yn6nj")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="ShapeSelectionButton2" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_yn6nj")]
+[node name="ShapeSelectionButton2" parent="MarginContainer/VBoxContainer/ShapeButtonHBoxContainer" instance=ExtResource("4_yn6nj")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 shape = 1
 
-[node name="ShapeSelectionButton3" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_yn6nj")]
+[node name="ShapeSelectionButton3" parent="MarginContainer/VBoxContainer/ShapeButtonHBoxContainer" instance=ExtResource("4_yn6nj")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -96,3 +99,5 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "RELINQUISH FATE"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/ConfirmButton" to="." method="_on_confirm_button_pressed"]
