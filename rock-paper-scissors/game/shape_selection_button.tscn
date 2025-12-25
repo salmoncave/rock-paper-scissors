@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b66tcgqv117fd"]
+[gd_scene load_steps=10 format=3 uid="uid://b66tcgqv117fd"]
 
 [ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/jitter_shader.gdshader" id="1_8d67l"]
 [ext_resource type="Script" uid="uid://bv8wajw8dttd1" path="res://game/shape_selection_button.gd" id="1_u0a7n"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bb7u6e0bk1fqj" path="res://common/sprites/paper_pixelated_04.png" id="3_8d67l"]
 [ext_resource type="Texture2D" uid="uid://bd3jpj115jqhr" path="res://common/sprites/scissors_pixelated_00.png" id="4_0cx1e"]
 [ext_resource type="Texture2D" uid="uid://b0x0ujpi0a1a1" path="res://common/sprites/star_01.png" id="5_0cx1e"]
+[ext_resource type="PackedScene" uid="uid://dqe6efugjw542" path="res://common/particles/hover_particles.tscn" id="7_8ou3e"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0cx1e"]
 
@@ -40,6 +41,11 @@ hover_modulate_00 = Color(1, 1, 0, 1)
 hover_modulate_01 = Color(1, 0, 1, 1)
 active_modulate_00 = Color(1, 1, 1, 1)
 active_modulate_01 = Color(1, 0, 0, 1)
+
+[node name="GPUParticles2D" parent="." instance=ExtResource("7_8ou3e")]
+unique_name_in_owner = true
+z_index = 1
+position = Vector2(128, 128)
 
 [node name="Button" type="Button" parent="."]
 unique_name_in_owner = true
