@@ -2,9 +2,14 @@ class_name ShapeSelectionButton extends Control
 
 signal shape_selection_button_pressed(chosen_button: Button, chosen_shape: Main.GameShapes)
 
+@export var shape: Main.GameShapes
 @export var shapes_icons: Dictionary[Main.GameShapes, Texture2D]
 
-@export var shape: Main.GameShapes
+@export var hover_modulate_00: Color
+@export var hover_modulate_01: Color
+
+@export var active_modulate_00: Color
+@export var active_modulate_01: Color
 
 var _active_hover_tween: Tween
 var _passive_hover_tween: Tween
@@ -23,9 +28,14 @@ func _ready() -> void:
 	hover_background_00.visible = false
 	hover_background_01.visible = false
 
+func activate() -> void:
+	hover_background_00.modulate = active_modulate_00
+	hover_background_01.modulate = active_modulate_01
+
 func deactivate() -> void:
 	_stop_active_hover_tween()
 	_start_passive_hover_tween_loop()
+	
 
 func _create_selection_button_for_choice(selected_shape: Main.GameShapes) -> void:
 	button_icon.texture = shapes_icons[selected_shape]
@@ -126,11 +136,15 @@ func _stop_active_hover_tween() -> void:
 
 
 func _on_button_mouse_entered() -> void:
+	hover_background_00.modulate = hover_modulate_00
+	hover_background_01.modulate = hover_modulate_01
 	_stop_passive_hover_tween_loop()
 	_start_active_hover_tween()
 
-
 func _on_button_mouse_exited() -> void:
-	#print(active)
-	if !active:
+	if active:
+		hover_background_00.modulate = active_modulate_00
+		hover_background_01.modulate = active_modulate_01
+	else:
 		deactivate()
+	

@@ -18,6 +18,7 @@ func _ready() -> void:
 
 func _on_shape_selection_button_pressed(button: ShapeSelectionButton, shape: Main.GameShapes) -> void:
 	_deactivate_buttons(_selection_buttons, button)
+	button.activate()
 	button.active = true
 	selected_shape = shape
 	_has_selected_shape = true

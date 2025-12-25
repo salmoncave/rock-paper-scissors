@@ -36,6 +36,10 @@ shapes_icons = Dictionary[int, Texture2D]({
 1: ExtResource("3_8d67l"),
 2: ExtResource("4_0cx1e")
 })
+hover_modulate_00 = Color(1, 1, 0, 1)
+hover_modulate_01 = Color(1, 0, 1, 1)
+active_modulate_00 = Color(1, 1, 1, 1)
+active_modulate_01 = Color(1, 0, 0, 1)
 
 [node name="Button" type="Button" parent="."]
 unique_name_in_owner = true
@@ -52,7 +56,6 @@ icon_alignment = 1
 
 [node name="HoverBackground00" type="TextureRect" parent="Button"]
 unique_name_in_owner = true
-modulate = Color(1, 1, 0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,9 +69,6 @@ stretch_mode = 3
 
 [node name="HoverBackground01" type="TextureRect" parent="Button"]
 unique_name_in_owner = true
-visible = false
-modulate = Color(1, 0, 1, 1)
-material = SubResource("ShaderMaterial_0cx1e")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
