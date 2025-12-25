@@ -1,0 +1,121 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxtr1854bf68u"]
+
+[ext_resource type="Script" uid="uid://bcqxqvvnk66jp" path="res://scenes/main_menu.gd" id="1_nlya5"]
+
+[node name="MultiplayerController" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nlya5")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.140447, 0.140447, 0.140447, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenuLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 69
+text = "Main menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Host" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "host"
+
+[node name="Join" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Join
+"
+
+[node name="StartGame" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Start game"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 50
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 6
+text = "Create a name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerName" type="LineEdit" parent="VBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 6
+text = "Address"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Address" type="LineEdit" parent="VBoxContainer/MarginContainer2/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/StartGame" to="." method="_on_start_game_pressed"]
