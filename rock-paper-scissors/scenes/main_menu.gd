@@ -4,8 +4,11 @@ extends Control
 
 
 #@export var Address = "127.0.0.1"
+
+
 const PORT = 8910
 var peer : ENetMultiplayerPeer
+var given_player_id = -1
 
 var currently_hosting : bool = false
 var currently_joining: bool = false
@@ -39,6 +42,7 @@ func _host_game() -> bool:
 	peer.get_host().compress(ENetConnection.COMPRESS_RANGE_CODER) 
 	multiplayer.multiplayer_peer = peer
 	print("Waiting for friends")
+	given_player_id = 1
 	return true
 
 #Gets called on the sever and client
@@ -68,7 +72,8 @@ func connected_to_server():
 		print("No name :(")
 		return
 	print("Connected to the Server!")
-	send_player_infomation.rpc_id(1,player_name.text, multiplayer.get_unique_id())
+	given_player_id = multiplayer.get_unique_id()
+	send_player_infomation.rpc_id(1,player_name.text, given_player_id)
 	#if GameManager.players.size() == 2:
 	#	start_game.rpc()
 
@@ -99,7 +104,9 @@ func send_player_infomation(given_name,id) -> void:
 func start_game():
 	#figure out how we can add a condition to this for both sides
 	print("Starting game for ", peer)
-	var scene = game_scene.instantiate()
+	var scene = game_scene.instantiate() as GameController
+	
+	scene.player_id = given_player_id
 	get_tree().root.add_child(scene)
 	self.hide()
 	
