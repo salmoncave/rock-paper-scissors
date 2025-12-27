@@ -16,6 +16,7 @@ var _initial_pos_tween: Tween
 @onready var p_1_shape_texture: TextureRect = %P1ShapeTexture
 @onready var p_2_shape_texture: TextureRect = %P2ShapeTexture
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
+@onready var rich_text_label_result: RichTextLabel = %RichTextLabelResult
 
 
 func _init() -> void:
@@ -35,15 +36,18 @@ func _process_round(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes) -> voi
 	await animation_player.animation_finished
 	#Tie
 	if p1_shape == p2_shape:
-		print("TIE")
+		rich_text_label_result.text = "TIE"
+		#print("TIE")
 		players_tied_round.emit()
 	#P1 Win
 	elif _did_first_player_win(p1_shape, p2_shape):
-		print("P1 WIN")
+		rich_text_label_result.text = "P1 WIN"
+		#print("P1 WIN")
 		player_1_won_round.emit()
 	#P2 Win
 	else:
-		print("P2 WIN")
+		rich_text_label_result.text = "P2 WIN"
+		#print("P2 WIN")
 		player_2_won_round.emit()
 
 func _did_first_player_win(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes) -> bool:
@@ -77,3 +81,4 @@ func _tween_initial_scene() -> void:
 func _on_animation_player_swap_textures() -> void:
 	p_1_shape_texture.texture = shapes_textures[player_one_shape]
 	p_2_shape_texture.texture = shapes_textures[player_two_shape]
+	

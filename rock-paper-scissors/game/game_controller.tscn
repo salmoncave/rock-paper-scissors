@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmsubkaixbygt"]
+
+[ext_resource type="Script" uid="uid://dgufc4bto0sgt" path="res://game/game_controller.gd" id="1_2bjpj"]
+[ext_resource type="PackedScene" uid="uid://bxqtdwvgrb53d" path="res://game/shape_selection_window.tscn" id="2_eb65f"]
+[ext_resource type="PackedScene" uid="uid://cq1fvxfr2eew8" path="res://game/round_process_window.tscn" id="3_5517d"]
+
+[node name="GameController" type="Node"]
+script = ExtResource("1_2bjpj")
+shape_selection_window_packed_scene = ExtResource("2_eb65f")
+round_process_window_packed_scene = ExtResource("3_5517d")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="CoverColorRect" type="ColorRect" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

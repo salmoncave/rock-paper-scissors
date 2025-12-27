@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://cq1fvxfr2eew8"]
+[gd_scene load_steps=14 format=3 uid="uid://cq1fvxfr2eew8"]
 
 [ext_resource type="Script" uid="uid://dslveqit071oe" path="res://game/round_process_window.gd" id="1_c44vq"]
+[ext_resource type="Theme" uid="uid://dqjnhgawjp3o2" path="res://game/shape_selection_window_theme.tres" id="1_ufbau"]
 [ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/jitter_shader.gdshader" id="2_sdtgi"]
 [ext_resource type="Texture2D" uid="uid://dr4g515782ue1" path="res://common/sprites/mushroom.png" id="2_xieuk"]
 [ext_resource type="Texture2D" uid="uid://bb7u6e0bk1fqj" path="res://common/sprites/paper_pixelated_04.png" id="3_x7tu6"]
@@ -39,6 +40,33 @@ shader_parameter/lifetime_randomness = 0.0
 shader_parameter/emission_shape_offset = Vector3(0, 0, 0)
 shader_parameter/emission_shape_scale = Vector3(1, 1, 1)
 shader_parameter/emission_box_extents = Vector3(100, 100, 0)
+
+[sub_resource type="Animation" id="Animation_jup2n"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/P1ShapeTexture:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-64, -64)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control2/P2ShapeTexture:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-64, -64)]
+}
 
 [sub_resource type="Animation" id="Animation_36bdn"]
 resource_name = "process_round_animation"
@@ -82,33 +110,6 @@ tracks/2/keys = {
 "values": [Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64)]
 }
 
-[sub_resource type="Animation" id="Animation_jup2n"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Control/P1ShapeTexture:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-64, -64)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Control2/P2ShapeTexture:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-64, -64)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jup2n"]
 _data = {
 &"RESET": SubResource("Animation_jup2n"),
@@ -122,6 +123,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_ufbau")
 script = ExtResource("1_c44vq")
 shapes_textures = Dictionary[int, Texture2D]({
 0: ExtResource("4_ic7pk"),
@@ -229,3 +231,20 @@ unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_jup2n")
 }
+
+[node name="RichTextLabelResult" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -451.0
+offset_right = 451.0
+offset_bottom = 132.0
+grow_horizontal = 2
+theme_type_variation = &"RichTextLabelTitle"
+text = "FATE SHALL DECIDE"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1

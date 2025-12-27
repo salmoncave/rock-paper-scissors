@@ -1,6 +1,6 @@
 class_name ShapeSelectionWindow extends Control
 
-signal confirmed_shape_selection(confirmed_shape: Main.GameShapes)
+signal confirmed_shape_selection(player_id: int, confirmed_shape: Main.GameShapes)
 signal selection_tween_finished
 
 @onready var shape_button_h_box_container: HBoxContainer = %ShapeButtonHBoxContainer
@@ -34,7 +34,7 @@ func _on_shape_selection_button_pressed(button: ShapeSelectionButton, shape: Mai
 func _on_confirm_button_pressed() -> void:
 	if _has_selected_shape:
 		print("confirmed shape: ", Main.GameShapes.keys()[selected_shape])
-		confirmed_shape_selection.emit(selected_shape)
+		confirmed_shape_selection.emit(0, selected_shape)
 		#_active_button.deactivate()
 		_tween_button_selection(_active_button)
 		_active_button.selection_trail_gpu_particles_2d.emitting = true
