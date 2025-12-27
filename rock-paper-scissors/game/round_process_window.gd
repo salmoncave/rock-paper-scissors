@@ -4,10 +4,14 @@ signal players_tied_round
 signal player_1_won_round
 signal player_2_won_round
 
+@onready var altar_h_box_container: HBoxContainer = %AltarHBoxContainer
+var altar_intial_pos_y := 360.0
+
 func _ready() -> void:
-	_process_round(Main.GameShapes.ROCK, Main.GameShapes.SCISSORS)
-	_process_round(Main.GameShapes.ROCK, Main.GameShapes.PAPER)
-	_process_round(Main.GameShapes.SCISSORS, Main.GameShapes.SCISSORS)
+	_tween_initial_scene()
+	#_process_round(Main.GameShapes.ROCK, Main.GameShapes.SCISSORS)
+	#_process_round(Main.GameShapes.ROCK, Main.GameShapes.PAPER)
+	#_process_round(Main.GameShapes.SCISSORS, Main.GameShapes.SCISSORS)
 
 func _process_round(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes) -> void:
 	#Tie
@@ -37,3 +41,13 @@ func _did_first_player_win(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes)
 		return true
 	
 	return false
+
+func _tween_initial_scene() -> void:
+	var tween_duration := 0.5
+	
+	altar_h_box_container.position.y = altar_intial_pos_y
+	
+	var pos_tween := create_tween()
+	pos_tween.tween_property(
+		altar_h_box_container, "position:y",
+		0.0, tween_duration)
