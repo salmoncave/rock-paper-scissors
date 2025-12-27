@@ -9,7 +9,8 @@ class_name GameController extends Node
 var player_id : int = -1
 
 var players_ready = {}
-var multiplayer_active
+var animation_finished : bool = false
+
 
 var _active_shape_selection_window: ShapeSelectionWindow
 var _active_round_process_window: RoundProcessWindow
@@ -37,26 +38,28 @@ func _spawn_shape_selection_window() -> ShapeSelectionWindow:
 	
 	return new_shape_selection_window
 
+
+@rpc("any_peer", "call_local")
 func _spawn_round_process_window() -> RoundProcessWindow:
+	_active_shape_selection_window.queue_free()
 	var new_round_process_window := round_process_window_packed_scene.instantiate() as RoundProcessWindow
-	
 	new_round_process_window.player_one_shape = _player_one_shape
 	new_round_process_window.player_two_shape = _player_two_shape
 	
 	canvas_layer.add_child(new_round_process_window)
 	_active_round_process_window = new_round_process_window
-	
-
 	return new_round_process_window
 
 func _on_shape_selection_window_selection_tween_finished() -> void:
 	if player_id == -1:
 		print("Queue free")
-		_active_shape_selection_window.queue_free()
+		#_active_shape_selection_window.queue_free()
 		_spawn_round_process_window()
 	else:
-		pass
-		#assume we are in multiplayer and have to wait
+		animation_finished = true
+		if players_ready.size() == 2:
+			
+			_spawn_round_process_window.rpc()
 
 func _on_shape_selection_window_confirmed_shape_selection(confirmed_player_id: int, confirmed_shape: Main.GameShapes) -> void:
 	if confirmed_player_id == -1:
@@ -76,6 +79,6 @@ func multiplayer_ready_up(id:int, choosen_shape: Main.GameShapes):
 	
 	print("ID: ", player_id , " players that are ready :" ,players_ready)
 	print("ID: ", player_id ," | ", _player_one_shape, _player_two_shape )
-	if players_ready.size() == 2:
-		_spawn_round_process_window()
+	#if players_ready.size() == 2 and animation_finished:
+	#	_spawn_round_process_window()
 		#_spawn_round_process_window
