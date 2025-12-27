@@ -1,8 +1,6 @@
 extends Control
 
-
-
-
+@export var game_scene: PackedScene 
 
 
 #@export var Address = "127.0.0.1"
@@ -45,6 +43,7 @@ func _host_game() -> bool:
 #Gets called on the sever and client
 func peer_connected(id):
 	print("player connected " + str(id))
+	start_game.rpc()
 
 #Gets called on the sever and client
 func peer_disconnected(id):
@@ -56,23 +55,28 @@ func peer_disconnected(id):
 			i.queue_free()
 	if removed:
 		print("player removed from game manager  " + str(id))
+	
 
-#Called ONLY from the clients
+#Called ONLY from the clients(non host)
 # This function is how you send client data to server data
 func connected_to_server():
 	if !player_name.text:
 		print("No name :(")
 		return
+	
 	print("Connected to the Server!")
+	##if GameManager.players.keys().size() > 2:
+	#	discon
 	#can be sent on peer connected to double check infomation or 
 	# just in connected to sever so that only the new player needs to update
 	# the server
+	#1 is the host
 	send_player_infomation.rpc_id(1,player_name.text, multiplayer.get_unique_id())
 
 func connection_failed():
 	print("Couldn't Connect to server")
 
-#Call every machine exact the local machine
+#Always any peer Call every machine exact the local machine
 @rpc("any_peer")
 func send_player_infomation(given_name,id) -> void:
 	#if this is a unquie name/ hasn't been put in the global script add it
@@ -89,10 +93,12 @@ func send_player_infomation(given_name,id) -> void:
 		for i in GameManager.players:
 			send_player_infomation.rpc(GameManager.players[i].name, i)
 
-#This is an rpc, force every machien to call this 
+
+#This is an rpc function which, force every machine to call this 
 @rpc("any_peer","call_local")
 func start_game():
-	var scene = load("res://scene/levels/lvl_multiplayer_game.tscn").instantiate()
+	#if GameManager.players.size() == 2:
+	var scene = game_scene.instantiate()
 	get_tree().root.add_child(scene)
 	self.hide()
 	
@@ -160,9 +166,10 @@ func upnp_setup() -> bool:
 		success = false
 	assert(map_result == UPNP.UPNP_RESULT_SUCCESS, "UPNP Port Mapping Failed! Error %s" % map_result)
 	if success:
-		print("Success! Join Address: %s ", upnp.query_external_address())
+		print("Success! Join Address: ", upnp.query_external_address())
 	else:
 		print("Failed! Did not Join Address")
+	address.text = upnp.query_external_address()
 	return success
 
 

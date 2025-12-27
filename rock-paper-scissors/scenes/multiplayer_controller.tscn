@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cxtr1854bf68u"]
+[gd_scene load_steps=3 format=3 uid="uid://cxtr1854bf68u"]
 
 [ext_resource type="Script" uid="uid://bcqxqvvnk66jp" path="res://scenes/main_menu.gd" id="1_nlya5"]
+[ext_resource type="PackedScene" uid="uid://bxqtdwvgrb53d" path="res://game/shape_selection_window.tscn" id="2_i24r0"]
 
 [node name="MultiplayerController" type="Control"]
 layout_mode = 3
@@ -10,6 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nlya5")
+game_scene = ExtResource("2_i24r0")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
