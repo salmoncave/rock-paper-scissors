@@ -1,0 +1,100 @@
+[gd_scene load_steps=8 format=3 uid="uid://cq1fvxfr2eew8"]
+
+[ext_resource type="Script" uid="uid://dslveqit071oe" path="res://game/round_process_window.gd" id="1_c44vq"]
+[ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/jitter_shader.gdshader" id="2_sdtgi"]
+[ext_resource type="Texture2D" uid="uid://dr4g515782ue1" path="res://common/sprites/mushroom.png" id="2_xieuk"]
+[ext_resource type="Shader" uid="uid://bnrtxqk0pc5we" path="res://common/pixel_explosion.gdshader" id="4_36bdn"]
+[ext_resource type="Texture2D" uid="uid://dq0ea3kyvb1dm" path="res://common/sprites/rock_pixelated_02.png" id="4_ic7pk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ic7pk"]
+shader = ExtResource("2_sdtgi")
+shader_parameter/shaking = true
+shader_parameter/amplitude = 10.0
+shader_parameter/noise_scale = 50.0
+shader_parameter/noise_speed = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jup2n"]
+shader = ExtResource("4_36bdn")
+shader_parameter/spread = 180.0
+shader_parameter/inherit_emitter_velocity_ratio = 0.0
+shader_parameter/initial_linear_velocity_min = 100.0
+shader_parameter/initial_linear_velocity_max = 100.0
+shader_parameter/orbit_velocity_min = 0.0
+shader_parameter/orbit_velocity_max = 0.0
+shader_parameter/radial_velocity_min = 0.0
+shader_parameter/radial_velocity_max = 0.0
+shader_parameter/linear_accel_min = 0.0
+shader_parameter/linear_accel_max = 0.0
+shader_parameter/radial_accel_min = 0.0
+shader_parameter/radial_accel_max = 0.0
+shader_parameter/tangent_accel_min = 0.0
+shader_parameter/tangent_accel_max = 0.0
+shader_parameter/damping_min = 0.0
+shader_parameter/damping_max = 0.0
+shader_parameter/scale_min = 1.0
+shader_parameter/scale_max = 1.0
+shader_parameter/lifetime_randomness = 0.0
+shader_parameter/emission_shape_offset = Vector3(0, 0, 0)
+shader_parameter/emission_shape_scale = Vector3(1, 1, 1)
+shader_parameter/emission_box_extents = Vector3(100, 100, 0)
+
+[node name="RoundProcessWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c44vq")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -512.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+material = SubResource("ShaderMaterial_ic7pk")
+custom_minimum_size = Vector2(512, 512)
+layout_mode = 2
+size_flags_horizontal = 2
+texture = ExtResource("2_xieuk")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer"]
+material = SubResource("ShaderMaterial_ic7pk")
+custom_minimum_size = Vector2(512, 512)
+layout_mode = 2
+size_flags_horizontal = 10
+texture = ExtResource("2_xieuk")
+stretch_mode = 5
+flip_h = true
+
+[node name="P1SpawnMarker2D" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(256, 300)
+
+[node name="TextureRect" type="TextureRect" parent="P1SpawnMarker2D"]
+material = SubResource("ShaderMaterial_jup2n")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("4_ic7pk")
+
+[node name="P2SpawnMarker2D" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(1024, 300)
