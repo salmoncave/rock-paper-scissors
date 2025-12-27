@@ -9,6 +9,8 @@ signal selection_tween_finished
 @onready var concede_button: Button = %ConcedeButton
 @onready var texture_rect_background: TextureRect = %TextureRectBackground
 
+#var player_id 
+
 var selected_shape := Main.GameShapes.ROCK
 var _has_selected_shape: bool = false
 
@@ -34,6 +36,7 @@ func _on_shape_selection_button_pressed(button: ShapeSelectionButton, shape: Mai
 func _on_confirm_button_pressed() -> void:
 	if _has_selected_shape:
 		print("confirmed shape: ", Main.GameShapes.keys()[selected_shape])
+		#GameManager.player_ready_up()
 		confirmed_shape_selection.emit(selected_shape)
 		#_active_button.deactivate()
 		_tween_button_selection(_active_button)
@@ -49,6 +52,7 @@ func _on_confirm_button_pressed() -> void:
 				_tween_inactive_button(button)
 		await selection_tween_finished
 		_active_button.selection_trail_gpu_particles_2d.emitting = false
+		
 	else:
 		push_error("NO SELECTED SHAPE")
 	

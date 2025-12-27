@@ -6,6 +6,7 @@ extends Control
 #@export var Address = "127.0.0.1"
 const PORT = 8910
 var peer : ENetMultiplayerPeer
+
 var currently_hosting : bool = false
 var currently_joining: bool = false
 
@@ -43,7 +44,10 @@ func _host_game() -> bool:
 #Gets called on the sever and client
 func peer_connected(id):
 	print("player connected " + str(id))
-	start_game.rpc()
+	#print(GameManager.players)
+	#once a single player joins. 
+	if GameManager.players.size() == 1:
+		start_game.rpc()
 
 #Gets called on the sever and client
 func peer_disconnected(id):
@@ -63,15 +67,10 @@ func connected_to_server():
 	if !player_name.text:
 		print("No name :(")
 		return
-	
 	print("Connected to the Server!")
-	##if GameManager.players.keys().size() > 2:
-	#	discon
-	#can be sent on peer connected to double check infomation or 
-	# just in connected to sever so that only the new player needs to update
-	# the server
-	#1 is the host
 	send_player_infomation.rpc_id(1,player_name.text, multiplayer.get_unique_id())
+	#if GameManager.players.size() == 2:
+	#	start_game.rpc()
 
 func connection_failed():
 	print("Couldn't Connect to server")
@@ -92,12 +91,14 @@ func send_player_infomation(given_name,id) -> void:
 	if multiplayer.is_server():
 		for i in GameManager.players:
 			send_player_infomation.rpc(GameManager.players[i].name, i)
+	print(GameManager.players)
 
 
 #This is an rpc function which, force every machine to call this 
 @rpc("any_peer","call_local")
 func start_game():
-	#if GameManager.players.size() == 2:
+	#figure out how we can add a condition to this for both sides
+	print("Starting game for ", peer)
 	var scene = game_scene.instantiate()
 	get_tree().root.add_child(scene)
 	self.hide()

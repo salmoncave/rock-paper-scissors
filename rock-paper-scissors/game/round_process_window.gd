@@ -4,11 +4,13 @@ signal players_tied_round
 signal player_1_won_round
 signal player_2_won_round
 
-@onready var altar_h_box_container: HBoxContainer = %AltarHBoxContainer
 var altar_intial_pos_y := 360.0
+
+@onready var altar_h_box_container: HBoxContainer = %AltarHBoxContainer
 
 func _ready() -> void:
 	_tween_initial_scene()
+	#_process_round(player_one_shape,player_two_shape)
 	#_process_round(Main.GameShapes.ROCK, Main.GameShapes.SCISSORS)
 	#_process_round(Main.GameShapes.ROCK, Main.GameShapes.PAPER)
 	#_process_round(Main.GameShapes.SCISSORS, Main.GameShapes.SCISSORS)
