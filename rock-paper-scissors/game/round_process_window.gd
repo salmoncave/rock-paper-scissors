@@ -4,16 +4,35 @@ signal players_tied_round
 signal player_1_won_round
 signal player_2_won_round
 
-@onready var altar_h_box_container: HBoxContainer = %AltarHBoxContainer
+@export var shapes_textures: Dictionary[Main.GameShapes, Texture2D]
+
+var player_one_shape: Main.GameShapes
+var player_two_shape: Main.GameShapes
 var altar_intial_pos_y := 360.0
+
+var _initial_pos_tween: Tween
+
+@onready var altar_h_box_container: HBoxContainer = %AltarHBoxContainer
+@onready var p_1_shape_texture: TextureRect = %P1ShapeTexture
+@onready var p_2_shape_texture: TextureRect = %P2ShapeTexture
+@onready var animation_player: AnimationPlayer = %AnimationPlayer
+
+
+func _init() -> void:
+	player_one_shape = Main.GameShapes.PAPER
+	player_two_shape = Main.GameShapes.SCISSORS
 
 func _ready() -> void:
 	_tween_initial_scene()
+	await _initial_pos_tween.finished
+	_process_round(player_one_shape, player_two_shape)
 	#_process_round(Main.GameShapes.ROCK, Main.GameShapes.SCISSORS)
 	#_process_round(Main.GameShapes.ROCK, Main.GameShapes.PAPER)
 	#_process_round(Main.GameShapes.SCISSORS, Main.GameShapes.SCISSORS)
 
 func _process_round(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes) -> void:
+	animation_player.play("process_round_animation")
+	await animation_player.animation_finished
 	#Tie
 	if p1_shape == p2_shape:
 		print("TIE")
@@ -47,7 +66,14 @@ func _tween_initial_scene() -> void:
 	
 	altar_h_box_container.position.y = altar_intial_pos_y
 	
-	var pos_tween := create_tween()
-	pos_tween.tween_property(
+	_initial_pos_tween = create_tween()
+	_initial_pos_tween.tween_property(
 		altar_h_box_container, "position:y",
 		0.0, tween_duration)
+
+#func _on_animation_player_round_animation_finished() -> void:
+	#pass
+
+func _on_animation_player_swap_textures() -> void:
+	p_1_shape_texture.texture = shapes_textures[player_one_shape]
+	p_2_shape_texture.texture = shapes_textures[player_two_shape]
