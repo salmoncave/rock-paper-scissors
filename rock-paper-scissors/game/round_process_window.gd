@@ -39,6 +39,7 @@ func _process_round(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes) -> voi
 		rich_text_label_result.text = "TIE"
 		#print("TIE")
 		players_tied_round.emit()
+		
 	#P1 Win
 	elif _did_first_player_win(p1_shape, p2_shape):
 		rich_text_label_result.text = "P1 WIN"
@@ -49,6 +50,9 @@ func _process_round(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes) -> voi
 		rich_text_label_result.text = "P2 WIN"
 		#print("P2 WIN")
 		player_2_won_round.emit()
+	
+	
+	
 
 func _did_first_player_win(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes) -> bool:
 	var first_player_wins: Dictionary[Main.GameShapes, Main.GameShapes] = {
@@ -62,7 +66,6 @@ func _did_first_player_win(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes)
 	#that it would either be a win or not
 	if first_player_wins[p1_shape] == p2_shape:
 		return true
-	
 	return false
 
 func _tween_initial_scene() -> void:
