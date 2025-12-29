@@ -97,7 +97,7 @@ func multiplayer_ready_up(id:int, choosen_shape: Main.GameShapes):
 
 func result(winner_id:int):
 	if player_id == winner_id:
-		
+		pass
 		
 	
 

@@ -1,13 +1,15 @@
-[gd_scene load_steps=14 format=3 uid="uid://cq1fvxfr2eew8"]
+[gd_scene load_steps=28 format=3 uid="uid://cq1fvxfr2eew8"]
 
 [ext_resource type="Script" uid="uid://dslveqit071oe" path="res://game/round_process_window.gd" id="1_c44vq"]
 [ext_resource type="Theme" uid="uid://dqjnhgawjp3o2" path="res://game/shape_selection_window_theme.tres" id="1_ufbau"]
-[ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/jitter_shader.gdshader" id="2_sdtgi"]
+[ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/shaders/jitter_shader.gdshader" id="2_sdtgi"]
 [ext_resource type="Texture2D" uid="uid://dr4g515782ue1" path="res://common/sprites/mushroom.png" id="2_xieuk"]
 [ext_resource type="Texture2D" uid="uid://bb7u6e0bk1fqj" path="res://common/sprites/paper_pixelated_04.png" id="3_x7tu6"]
-[ext_resource type="Shader" uid="uid://bnrtxqk0pc5we" path="res://common/pixel_explosion.gdshader" id="4_36bdn"]
 [ext_resource type="Texture2D" uid="uid://dq0ea3kyvb1dm" path="res://common/sprites/rock_pixelated_02.png" id="4_ic7pk"]
 [ext_resource type="Texture2D" uid="uid://bd3jpj115jqhr" path="res://common/sprites/scissors_pixelated_00.png" id="4_ufbau"]
+[ext_resource type="Material" uid="uid://bwol45amwgy44" path="res://common/shaders/explosion_shader_material.tres" id="8_vlw8n"]
+[ext_resource type="Texture2D" uid="uid://dxfioc7j2dml2" path="res://common/sprites/crown_a.png" id="9_twdqm"]
+[ext_resource type="Shader" uid="uid://cxpyg3p1306xc" path="res://common/shaders/sprite_explosion.gdshader" id="9_vlw8n"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ic7pk"]
 shader = ExtResource("2_sdtgi")
@@ -16,56 +18,185 @@ shader_parameter/amplitude = 10.0
 shader_parameter/noise_scale = 50.0
 shader_parameter/noise_speed = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jup2n"]
-shader = ExtResource("4_36bdn")
-shader_parameter/spread = 180.0
-shader_parameter/inherit_emitter_velocity_ratio = 0.0
-shader_parameter/initial_linear_velocity_min = 100.0
-shader_parameter/initial_linear_velocity_max = 100.0
-shader_parameter/orbit_velocity_min = 0.0
-shader_parameter/orbit_velocity_max = 0.0
-shader_parameter/radial_velocity_min = 0.0
-shader_parameter/radial_velocity_max = 0.0
-shader_parameter/linear_accel_min = 0.0
-shader_parameter/linear_accel_max = 0.0
-shader_parameter/radial_accel_min = 0.0
-shader_parameter/radial_accel_max = 0.0
-shader_parameter/tangent_accel_min = 0.0
-shader_parameter/tangent_accel_max = 0.0
-shader_parameter/damping_min = 0.0
-shader_parameter/damping_max = 0.0
-shader_parameter/scale_min = 1.0
-shader_parameter/scale_max = 1.0
-shader_parameter/lifetime_randomness = 0.0
-shader_parameter/emission_shape_offset = Vector3(0, 0, 0)
-shader_parameter/emission_shape_scale = Vector3(1, 1, 1)
-shader_parameter/emission_box_extents = Vector3(100, 100, 0)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_twdqm"]
+frequency = 0.1
+domain_warp_enabled = true
+domain_warp_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bg4ku"]
+width = 128
+height = 128
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_twdqm")
+seamless = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_viyas"]
+noise_type = 4
+frequency = 0.3
+fractal_type = 3
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6kjhf"]
+width = 128
+height = 128
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_viyas")
+seamless = true
+as_normal_map = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_17hho"]
+resource_local_to_scene = true
+shader = ExtResource("9_vlw8n")
+shader_parameter/noise_tex_normal = SubResource("NoiseTexture2D_6kjhf")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_bg4ku")
+shader_parameter/progress = 0.0
+shader_parameter/strength = 1.0
+shader_parameter/scale = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_aoieh"]
+frequency = 0.1
+domain_warp_enabled = true
+domain_warp_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wypbq"]
+width = 128
+height = 128
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_aoieh")
+seamless = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_6n7k0"]
+noise_type = 4
+frequency = 0.3
+fractal_type = 3
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ymttv"]
+width = 128
+height = 128
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_6n7k0")
+seamless = true
+as_normal_map = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_twdqm"]
+resource_local_to_scene = true
+shader = ExtResource("9_vlw8n")
+shader_parameter/noise_tex_normal = SubResource("NoiseTexture2D_ymttv")
+shader_parameter/noise_tex = SubResource("NoiseTexture2D_wypbq")
+shader_parameter/progress = 0.0
+shader_parameter/strength = 1.0
+shader_parameter/scale = 2.0
 
 [sub_resource type="Animation" id="Animation_jup2n"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Control/P1ShapeTexture:position")
+tracks/0/path = NodePath("Control2/P2ShapeTexture:material:shader_parameter/progress")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-64, -64)]
+"values": [0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Control2/P2ShapeTexture:position")
+tracks/1/path = NodePath("Control/P1ShapeTexture:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-64, -64)]
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control2/P2ShapeTexture:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Control/P1ShapeTexture:material:shader_parameter/progress")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Control/P1ShapeTexture/P1CrownTextureRect:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Control2/P2ShapeTexture/P2CrownTextureRect:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Control/P1ShapeTexture/P1CrownTextureRect:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(64, 16)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Control2/P2ShapeTexture/P2CrownTextureRect:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(64, 16)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Control/P1ShapeTexture/P1CrownTextureRect:material:shader_parameter/progress")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
 }
 
 [sub_resource type="Animation" id="Animation_36bdn"]
@@ -95,7 +226,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.50000006, 0.8, 1, 1.3, 1.5, 1.8, 1.9999999),
 "transitions": PackedFloat32Array(1, 0.25, 1, 0.25, 1, 0.25, 1, 0.25, 1),
 "update": 0,
-"values": [Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64)]
+"values": [Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -107,13 +238,157 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.50000006, 0.8, 1, 1.3, 1.5, 1.8, 1.9999999),
 "transitions": PackedFloat32Array(1, 0.25, 1, 0.25, 1, 0.25, 1, 0.25, 1),
 "update": 0,
-"values": [Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64), Vector2(-64, -196), Vector2(-64, -64)]
+"values": [Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128)]
+}
+
+[sub_resource type="Animation" id="Animation_ufbau"]
+resource_name = "p1_win"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control2/P2ShapeTexture:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6666667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/P1ShapeTexture:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.20000002, 0.40000004),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0471975511965976, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_vlw8n"]
+resource_name = "p2_win"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control2/P2ShapeTexture:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.20000002, 0.40000004),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, -1.0471975511965976, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/P1ShapeTexture:material:shader_parameter/progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6666667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_twdqm"]
+resource_name = "tie"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/P1ShapeTexture/P1CrownTextureRect:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.033333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control2/P2ShapeTexture/P2CrownTextureRect:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control/P1ShapeTexture/P1CrownTextureRect:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.0001, 0.033333335, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(64, 16), Vector2(64, 16), Vector2(64, -128), Vector2(64, 12)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Control2/P2ShapeTexture/P2CrownTextureRect:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(64, 16), Vector2(64, -128), Vector2(64, 16)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Control/P1ShapeTexture:material:shader_parameter/progress")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.6666667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Control2/P2ShapeTexture:material:shader_parameter/progress")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.6666667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Control/P1ShapeTexture/P1CrownTextureRect:material:shader_parameter/progress")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.6666667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jup2n"]
 _data = {
 &"RESET": SubResource("Animation_jup2n"),
-&"process_round_animation": SubResource("Animation_36bdn")
+&"p1_win": SubResource("Animation_ufbau"),
+&"p2_win": SubResource("Animation_vlw8n"),
+&"process_round_animation": SubResource("Animation_36bdn"),
+&"tie": SubResource("Animation_twdqm")
 }
 
 [node name="RoundProcessWindow" type="Control"]
@@ -176,21 +451,30 @@ grow_vertical = 2
 
 [node name="P1ShapeTexture" type="TextureRect" parent="Control"]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_jup2n")
+material = ExtResource("8_vlw8n")
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(64, 64)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -128.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(128, 128)
 texture = ExtResource("4_ic7pk")
+stretch_mode = 3
+
+[node name="P1CrownTextureRect" type="TextureRect" parent="Control/P1ShapeTexture"]
+visible = false
+material = SubResource("ShaderMaterial_17hho")
+layout_mode = 1
+offset_left = 64.0
+offset_top = 16.0
+offset_right = 192.0
+offset_bottom = 144.0
+texture = ExtResource("9_twdqm")
 
 [node name="Control2" type="Control" parent="."]
 layout_mode = 1
@@ -208,23 +492,37 @@ grow_vertical = 2
 
 [node name="P2ShapeTexture" type="TextureRect" parent="Control2"]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_jup2n")
+material = SubResource("ShaderMaterial_twdqm")
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
-grow_horizontal = 2
-grow_vertical = 2
-rotation = 0.0043346337
-pivot_offset = Vector2(64, 64)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -128.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(128, 128)
 texture = ExtResource("4_ic7pk")
 flip_h = true
+
+[node name="P2CrownTextureRect" type="TextureRect" parent="Control2/P2ShapeTexture"]
+visible = false
+material = SubResource("ShaderMaterial_17hho")
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -112.0
+offset_right = 64.0
+offset_bottom = 16.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("9_twdqm")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true

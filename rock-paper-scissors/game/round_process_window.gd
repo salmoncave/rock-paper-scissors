@@ -1,8 +1,10 @@
 class_name RoundProcessWindow extends Control
 
-signal players_tied_round
-signal player_1_won_round
-signal player_2_won_round
+##0: Tie
+##1: Player One Win
+##2: Player Two Win
+signal round_completed(result: int)
+
 
 @export var shapes_textures: Dictionary[Main.GameShapes, Texture2D]
 
@@ -20,8 +22,8 @@ var _initial_pos_tween: Tween
 
 
 func _init() -> void:
-	player_one_shape = Main.GameShapes.PAPER
-	player_two_shape = Main.GameShapes.SCISSORS
+	player_one_shape = Main.GameShapes.SCISSORS
+	player_two_shape = Main.GameShapes.PAPER
 
 func _ready() -> void:
 	_tween_initial_scene()
@@ -37,22 +39,24 @@ func _process_round(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes) -> voi
 	#Tie
 	if p1_shape == p2_shape:
 		rich_text_label_result.text = "TIE"
-		#print("TIE")
-		players_tied_round.emit()
+		animation_player.play("tie")
+		await animation_player.animation_finished
+		round_completed.emit(0)
 		
 	#P1 Win
 	elif _did_first_player_win(p1_shape, p2_shape):
-		rich_text_label_result.text = "P1 WIN"
-		#print("P1 WIN")
-		player_1_won_round.emit()
+		rich_text_label_result.text = "YOU WIN"
+		animation_player.play("p1_win")
+		await animation_player.animation_finished
+		round_completed.emit(1)
 	#P2 Win
 	else:
-		rich_text_label_result.text = "P2 WIN"
-		#print("P2 WIN")
-		player_2_won_round.emit()
+		rich_text_label_result.text = "YOU LOSE"
+		animation_player.play("p2_win")
+		await animation_player.animation_finished
+		round_completed.emit(2)
 	
-	
-	
+
 
 func _did_first_player_win(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes) -> bool:
 	var first_player_wins: Dictionary[Main.GameShapes, Main.GameShapes] = {
