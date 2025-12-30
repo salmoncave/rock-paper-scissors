@@ -199,48 +199,6 @@ tracks/8/keys = {
 "values": [0.0]
 }
 
-[sub_resource type="Animation" id="Animation_36bdn"]
-resource_name = "process_round_animation"
-length = 2.0000033
-tracks/0/type = "method"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(1.9000001),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"_on_animation_player_swap_textures"
-}]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Control/P1ShapeTexture:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.50000006, 0.8, 1, 1.3, 1.5, 1.8, 1.9999999),
-"transitions": PackedFloat32Array(1, 0.25, 1, 0.25, 1, 0.25, 1, 0.25, 1),
-"update": 0,
-"values": [Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Control2/P2ShapeTexture:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.50000006, 0.8, 1, 1.3, 1.5, 1.8, 1.9999999),
-"transitions": PackedFloat32Array(1, 0.25, 1, 0.25, 1, 0.25, 1, 0.25, 1),
-"update": 0,
-"values": [Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128)]
-}
-
 [sub_resource type="Animation" id="Animation_ufbau"]
 resource_name = "p1_win"
 tracks/0/type = "value"
@@ -293,6 +251,48 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, 0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_36bdn"]
+resource_name = "process_round_animation"
+length = 2.0000033
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1.9000001),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_on_animation_player_swap_textures"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/P1ShapeTexture:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.50000006, 0.8, 1, 1.3, 1.5, 1.8, 1.9999999),
+"transitions": PackedFloat32Array(1, 0.25, 1, 0.25, 1, 0.25, 1, 0.25, 1),
+"update": 0,
+"values": [Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control2/P2ShapeTexture:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.50000006, 0.8, 1, 1.3, 1.5, 1.8, 1.9999999),
+"transitions": PackedFloat32Array(1, 0.25, 1, 0.25, 1, 0.25, 1, 0.25, 1),
+"update": 0,
+"values": [Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128), Vector2(-128, -196), Vector2(-128, -128)]
 }
 
 [sub_resource type="Animation" id="Animation_twdqm"]
@@ -530,18 +530,29 @@ libraries = {
 &"": SubResource("AnimationLibrary_jup2n")
 }
 
-[node name="RichTextLabelResult" type="RichTextLabel" parent="."]
-unique_name_in_owner = true
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -451.0
-offset_right = 451.0
-offset_bottom = 132.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabelTitle" type="RichTextLabel" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 theme_type_variation = &"RichTextLabelTitle"
 text = "FATE SHALL DECIDE"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabelResults" type="RichTextLabel" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"RichTextLabelTitle"
+text = "0 - 0"
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1

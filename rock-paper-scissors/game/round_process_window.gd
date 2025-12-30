@@ -1,10 +1,12 @@
 class_name RoundProcessWindow extends Control
 
+const ROUND_COMPLETE_WAIT_SECONDS := 1.0
+
 ##0: Tie
 ##1: Player One Win
 ##2: Player Two Win
-signal round_completed(result: int)
-
+signal round_completed
+signal round_processed(result: int)
 
 @export var shapes_textures: Dictionary[Main.GameShapes, Texture2D]
 
@@ -12,13 +14,16 @@ var player_one_shape: Main.GameShapes
 var player_two_shape: Main.GameShapes
 var altar_intial_pos_y := 360.0
 
+var _game_controller: GameController
 var _initial_pos_tween: Tween
 
 @onready var altar_h_box_container: HBoxContainer = %AltarHBoxContainer
 @onready var p_1_shape_texture: TextureRect = %P1ShapeTexture
 @onready var p_2_shape_texture: TextureRect = %P2ShapeTexture
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
-@onready var rich_text_label_result: RichTextLabel = %RichTextLabelResult
+@onready var rich_text_label_title: RichTextLabel = %RichTextLabelTitle
+@onready var rich_text_label_results: RichTextLabel = %RichTextLabelResults
+
 
 
 func _init() -> void:
@@ -26,6 +31,7 @@ func _init() -> void:
 	player_two_shape = Main.GameShapes.PAPER
 
 func _ready() -> void:
+	_update_win_loss_text()
 	_tween_initial_scene()
 	await _initial_pos_tween.finished
 	_process_round(player_one_shape, player_two_shape)
@@ -34,27 +40,42 @@ func _ready() -> void:
 	#_process_round(Main.GameShapes.SCISSORS, Main.GameShapes.SCISSORS)
 
 func _process_round(p1_shape: Main.GameShapes, p2_shape: Main.GameShapes) -> void:
+	var round_result: int = 0
+	var anim_name: String = ''
+	var title_text: String = ''
+	
 	animation_player.play("process_round_animation")
 	await animation_player.animation_finished
+	
 	#Tie
 	if p1_shape == p2_shape:
-		rich_text_label_result.text = "TIE"
+		round_result = 0
+		title_text = "TIE"
+		anim_name = "tie"
 		animation_player.play("tie")
-		await animation_player.animation_finished
-		round_completed.emit(0)
-		
 	#P1 Win
 	elif _did_first_player_win(p1_shape, p2_shape):
-		rich_text_label_result.text = "YOU WIN"
-		animation_player.play("p1_win")
-		await animation_player.animation_finished
-		round_completed.emit(1)
+		round_result = 1
+		title_text = "YOU WIN"
+		anim_name = "p1_win"
 	#P2 Win
 	else:
-		rich_text_label_result.text = "YOU LOSE"
-		animation_player.play("p2_win")
-		await animation_player.animation_finished
-		round_completed.emit(2)
+		round_result = 2
+		title_text = "YOU LOSE"
+		anim_name = "p2_win"
+	
+	#Get results, send them to GameController
+	round_processed.emit(round_result)
+	#Display Title text
+	rich_text_label_title.text = title_text
+	#Set text for w/l from within GameController
+	_update_win_loss_text()
+	#Play anim
+	animation_player.play(anim_name)
+	#Wait for animation player to declare round finished
+	await animation_player.animation_finished
+	await get_tree().create_timer(ROUND_COMPLETE_WAIT_SECONDS).timeout
+	round_completed.emit()
 	
 
 
@@ -88,4 +109,19 @@ func _tween_initial_scene() -> void:
 func _on_animation_player_swap_textures() -> void:
 	p_1_shape_texture.texture = shapes_textures[player_one_shape]
 	p_2_shape_texture.texture = shapes_textures[player_two_shape]
+	
+
+func _update_win_loss_text() -> void:
+	var self_win_count := _game_controller.round_results.count(1)
+	var opponent_win_count := _game_controller.round_results.count(2)
+	var ties_count := _game_controller.round_results.count(0)
+	
+	var win_loss_string := (
+		str(self_win_count) + " - " + 
+		str(opponent_win_count) + " - " +
+		str(ties_count)
+		)
+	print(win_loss_string)
+	
+	rich_text_label_results.text = win_loss_string
 	
