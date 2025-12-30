@@ -8,12 +8,15 @@ var player_id : int = -1
 
 @onready var shape_button_h_box_container: HBoxContainer = %ShapeButtonHBoxContainer
 @onready var rich_text_label_title: RichTextLabel = %RichTextLabelTitle
+@onready var rich_text_label_timer: RichTextLabel = %RichTextLabelTimer
 @onready var confirm_button: Button = %ConfirmButton
 @onready var concede_button: Button = %ConcedeButton
 @onready var texture_rect_background: TextureRect = %TextureRectBackground
-
+@onready var selection_timer: Timer = %SelectionTimer
 
 var selected_shape := Main.GameShapes.ROCK
+var round_selection_seconds: float = 15.0
+
 var _has_selected_shape: bool = false
 
 var _selection_buttons: Array[ShapeSelectionButton]
@@ -25,6 +28,9 @@ func _ready() -> void:
 			child.shape_selection_button_pressed.connect(_on_shape_selection_button_pressed)
 			_selection_buttons.append(child)
 	
+
+func _physics_process(_delta: float) -> void:
+	rich_text_label_timer.text = _get_timer_text(selection_timer.time_left)
 
 func _on_shape_selection_button_pressed(button: ShapeSelectionButton, shape: Main.GameShapes) -> void:
 	_deactivate_buttons(_selection_buttons, button)
@@ -103,3 +109,13 @@ func _tween_inactive_button(button: ShapeSelectionButton) -> void:
 	inactive_button_tween.tween_property(
 		button, "modulate", Color(1.0, 0.0, 0.0, 0.0), tween_duration
 	)
+
+func _get_timer_text(time_seconds: float) -> String:
+	return str("%.2f" % time_seconds).replace(".", ":")
+
+
+func _on_selection_timer_timeout() -> void:
+	_active_button = _selection_buttons.pick_random()
+	_has_selected_shape = true
+	selected_shape = _active_button.shape
+	_on_confirm_button_pressed()

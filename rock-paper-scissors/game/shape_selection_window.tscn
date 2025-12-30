@@ -58,7 +58,7 @@ fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
 
-[node name="RichTextLabelTitle2" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="RichTextLabelTimer" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"RichTextLabelTimer"
@@ -113,4 +113,10 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "RELINQUISH FATE"
 
+[node name="SelectionTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 30.0
+one_shot = true
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/ConfirmButton" to="." method="_on_confirm_button_pressed"]
+[connection signal="timeout" from="SelectionTimer" to="." method="_on_selection_timer_timeout"]

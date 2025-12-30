@@ -6,6 +6,8 @@
 
 [node name="GameController" type="Node"]
 script = ExtResource("1_2bjpj")
+total_wins_needed = 4
+round_selection_seconds = 5.0
 shape_selection_window_packed_scene = ExtResource("2_eb65f")
 round_process_window_packed_scene = ExtResource("3_5517d")
 

@@ -1,8 +1,13 @@
 class_name GameController extends Node
 
+@export_group("Round Settings")
+@export var total_wins_needed: int = 2
+@export var round_selection_seconds: float = 15.0
+
+@export_group("Packed Scenes")
 @export var shape_selection_window_packed_scene: PackedScene
 @export var round_process_window_packed_scene: PackedScene
-@export var total_wins_needed: int = 2 
+
 
 var player_id : int = -1
 var players_ready = {}
@@ -27,6 +32,8 @@ func _spawn_shape_selection_window() -> ShapeSelectionWindow:
 	var new_shape_selection_window := shape_selection_window_packed_scene.instantiate() as ShapeSelectionWindow
 	new_shape_selection_window.player_id = player_id
 	canvas_layer.add_child(new_shape_selection_window)
+	
+	new_shape_selection_window.selection_timer.start(round_selection_seconds)
 	
 	new_shape_selection_window.confirmed_shape_selection.connect(
 		_on_shape_selection_window_confirmed_shape_selection
