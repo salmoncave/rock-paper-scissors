@@ -1,24 +1,36 @@
-[gd_scene load_steps=4 format=3 uid="uid://dmsubkaixbygt"]
+[gd_scene load_steps=8 format=3 uid="uid://dmsubkaixbygt"]
 
 [ext_resource type="Script" uid="uid://dgufc4bto0sgt" path="res://game/game_controller.gd" id="1_2bjpj"]
-[ext_resource type="PackedScene" uid="uid://bxqtdwvgrb53d" path="res://game/shape_selection_window.tscn" id="2_eb65f"]
-[ext_resource type="PackedScene" uid="uid://cq1fvxfr2eew8" path="res://game/round_process_window.tscn" id="3_5517d"]
+[ext_resource type="PackedScene" uid="uid://bxqtdwvgrb53d" path="res://game/windows/shape_selection_window.tscn" id="2_eb65f"]
+[ext_resource type="PackedScene" uid="uid://cq1fvxfr2eew8" path="res://game/windows/round_process_window.tscn" id="3_5517d"]
+[ext_resource type="PackedScene" uid="uid://d2aisb4em4voi" path="res://game/windows/match_result_window.tscn" id="4_4kcpm"]
+[ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/shaders/jitter_shader.gdshader" id="4_mob56"]
+[ext_resource type="Texture2D" uid="uid://bb1wr6jpwm3oe" path="res://common/sprites/Space Background (6).png" id="5_4kcpm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rmbjm"]
+shader = ExtResource("4_mob56")
+shader_parameter/shaking = true
+shader_parameter/amplitude = 1.5
+shader_parameter/noise_scale = 50.0
+shader_parameter/noise_speed = 2.0
 
 [node name="GameController" type="Node"]
 script = ExtResource("1_2bjpj")
-total_wins_needed = 4
+total_wins_needed = 1
 round_selection_seconds = 5.0
 shape_selection_window_packed_scene = ExtResource("2_eb65f")
 round_process_window_packed_scene = ExtResource("3_5517d")
+match_result_window_packed_scene = ExtResource("4_4kcpm")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 
-[node name="CoverColorRect" type="ColorRect" parent="CanvasLayer"]
-visible = false
+[node name="TextureRectBackground" type="TextureRect" parent="CanvasLayer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_rmbjm")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+texture = ExtResource("5_4kcpm")

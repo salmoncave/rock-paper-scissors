@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://b66tcgqv117fd"]
 
 [ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/shaders/jitter_shader.gdshader" id="1_8d67l"]
-[ext_resource type="Script" uid="uid://bv8wajw8dttd1" path="res://game/shape_selection_button.gd" id="1_u0a7n"]
+[ext_resource type="Script" uid="uid://bv8wajw8dttd1" path="res://game/windows/shape_selection_button.gd" id="1_u0a7n"]
 [ext_resource type="Texture2D" uid="uid://dq0ea3kyvb1dm" path="res://common/sprites/rock_pixelated_02.png" id="2_q32a0"]
 [ext_resource type="Texture2D" uid="uid://bb7u6e0bk1fqj" path="res://common/sprites/paper_pixelated_04.png" id="3_8d67l"]
 [ext_resource type="Texture2D" uid="uid://bd3jpj115jqhr" path="res://common/sprites/scissors_pixelated_00.png" id="4_0cx1e"]

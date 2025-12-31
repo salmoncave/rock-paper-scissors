@@ -11,7 +11,6 @@ var player_id : int = -1
 @onready var rich_text_label_timer: RichTextLabel = %RichTextLabelTimer
 @onready var confirm_button: Button = %ConfirmButton
 @onready var concede_button: Button = %ConcedeButton
-@onready var texture_rect_background: TextureRect = %TextureRectBackground
 @onready var selection_timer: Timer = %SelectionTimer
 
 var selected_shape := Main.GameShapes.ROCK
@@ -27,7 +26,7 @@ func _ready() -> void:
 		if child is ShapeSelectionButton:
 			child.shape_selection_button_pressed.connect(_on_shape_selection_button_pressed)
 			_selection_buttons.append(child)
-	
+		_selection_buttons[0].button_icon.material.set_shader_parameter("shaking", true)
 
 func _physics_process(_delta: float) -> void:
 	rich_text_label_timer.text = _get_timer_text(selection_timer.time_left)
@@ -43,6 +42,8 @@ func _on_shape_selection_button_pressed(button: ShapeSelectionButton, shape: Mai
 
 func _on_confirm_button_pressed() -> void:
 	if _has_selected_shape:
+		if not selection_timer.is_stopped():
+			selection_timer.stop()
 		print("confirmed shape: ", Main.GameShapes.keys()[selected_shape])
 		confirmed_shape_selection.emit(player_id, selected_shape)
 		#_active_button.deactivate()
@@ -84,6 +85,9 @@ func _tween_button_selection(button: ShapeSelectionButton) -> void:
 		rich_text_label_title, "self_modulate", Color(1.0, 0.0, 0.0, 0.0), modulate_duration
 	)
 	selection_tween.parallel().tween_property(
+		rich_text_label_timer, "self_modulate", Color(0.0, 0.0, 0.0, 0.0), modulate_duration
+	)
+	selection_tween.parallel().tween_property(
 		button, "scale", button_scale, scale_duration
 	)
 	selection_tween.tween_property(
@@ -92,12 +96,12 @@ func _tween_button_selection(button: ShapeSelectionButton) -> void:
 	await selection_tween.finished
 	selection_tween_finished.emit()
 	
-	texture_rect_background.material.set_shader_parameter("shaking", false)
-	var fade_tween := create_tween()
+	#texture_rect_background.material.set_shader_parameter("shaking", false)
+	#var fade_tween := create_tween()
 	
-	fade_tween.tween_property(
-		texture_rect_background, "self_modulate", Color(0.0, 0.0, 0.0, 1.0), scale_duration
-	)
+	#fade_tween.tween_property(
+		#texture_rect_background, "self_modulate", Color(0.0, 0.0, 0.0, 1.0), scale_duration
+	#)
 
 func _tween_inactive_button(button: ShapeSelectionButton) -> void:
 	var tween_duration := 0.5
@@ -115,6 +119,8 @@ func _get_timer_text(time_seconds: float) -> String:
 
 
 func _on_selection_timer_timeout() -> void:
+	if _has_selected_shape:
+		return
 	_active_button = _selection_buttons.pick_random()
 	_has_selected_shape = true
 	selected_shape = _active_button.shape

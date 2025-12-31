@@ -1,0 +1,72 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2aisb4em4voi"]
+
+[ext_resource type="Theme" uid="uid://dqjnhgawjp3o2" path="res://game/windows/shape_selection_window_theme.tres" id="1_1cmmo"]
+[ext_resource type="Script" uid="uid://dhfitmotny57r" path="res://game/windows/match_result_window.gd" id="1_hhasb"]
+
+[node name="MatchResultWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_1cmmo")
+script = ExtResource("1_hhasb")
+
+[node name="ControlRoot" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ControlRoot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ControlRoot/MarginContainer"]
+layout_mode = 2
+
+[node name="RichTextLabelTitle" type="RichTextLabel" parent="ControlRoot/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"RichTextLabelTitle"
+text = "YOU LOSE"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabelResults" type="RichTextLabel" parent="ControlRoot/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_type_variation = &"RichTextLabelTitle"
+text = "0 - 1 -1"
+fit_content = true
+autowrap_mode = 0
+
+[node name="ReplayButton" type="Button" parent="ControlRoot/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "Rematch"
+
+[node name="QuitButton" type="Button" parent="ControlRoot/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 2
+text = "Quit To Main Menu"

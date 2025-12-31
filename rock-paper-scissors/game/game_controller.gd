@@ -7,7 +7,7 @@ class_name GameController extends Node
 @export_group("Packed Scenes")
 @export var shape_selection_window_packed_scene: PackedScene
 @export var round_process_window_packed_scene: PackedScene
-
+@export var match_result_window_packed_scene: PackedScene
 
 var player_id : int = -1
 var players_ready = {}
@@ -17,6 +17,7 @@ var round_results: Array[int]
 
 var _active_shape_selection_window: ShapeSelectionWindow
 var _active_round_process_window: RoundProcessWindow
+var _active_match_result_window: MatchResultWindow
 
 var _player_one_shape: Main.GameShapes 
 var _player_two_shape: Main.GameShapes
@@ -69,6 +70,22 @@ func _spawn_round_process_window() -> RoundProcessWindow:
 	
 	return new_round_process_window
 
+func _spawn_match_result_window() -> void:
+	var new_match_result_window := match_result_window_packed_scene.instantiate() as MatchResultWindow
+	
+	new_match_result_window.set_match_results_window(round_results)
+	
+	canvas_layer.add_child(new_match_result_window)
+	
+	new_match_result_window.quit_button.pressed.connect(
+		_on_match_result_window_quit_button_pressed
+	)
+	new_match_result_window.replay_button.pressed.connect(
+		_on_match_result_window_replay_button_pressed
+	)
+	
+	_active_match_result_window = new_match_result_window
+
 func _on_shape_selection_window_selection_tween_finished() -> void:
 	if player_id == -1:
 		print("Queue free")
@@ -93,17 +110,13 @@ func _on_round_process_window_round_processed(result: int) -> void:
 	round_results.append(result)
 
 func _on_round_process_window_round_completed() -> void:
-	#round_results.append(result)
-	
-	if round_results.count(1) >= total_wins_needed:
-		#goto MATCH results on both machines with win
-		pass
-	elif round_results.count(2) >= total_wins_needed:
-		#goto MATCH results on both machines with loss
-		pass
+	_active_round_process_window.queue_free()
+	if round_results.count(1) >= total_wins_needed or round_results.count(2) >= total_wins_needed:
+		#goto MATCH results on both machines
+		
+		_spawn_match_result_window()
 	else:
 		if player_id == -1:
-			_active_round_process_window.queue_free()
 			_spawn_shape_selection_window()
 			
 		#goto shape selection
@@ -111,6 +124,8 @@ func _on_round_process_window_round_completed() -> void:
 			_spawn_shape_selection_window.rpc()
 		pass
 	
+
+
 
 #lets both sides that are connect on what was selected
 @rpc("any_peer", "call_local")
@@ -126,6 +141,12 @@ func multiplayer_ready_up(id:int, choosen_shape: Main.GameShapes):
 	if players_ready.size()==2:
 		second_caller = id
 
+func _on_match_result_window_replay_button_pressed() -> void:
+	reset_game()
+	print('replay')
+
+func _on_match_result_window_quit_button_pressed() -> void:
+	print('quit')
 
 #func result(winner_id:int):
 	#if player_id == winner_id:
@@ -134,6 +155,9 @@ func multiplayer_ready_up(id:int, choosen_shape: Main.GameShapes):
 	#
 
 func reset_game():
+	if _active_match_result_window:
+		_active_match_result_window.queue_free()
 	players_ready = {}
 	second_caller = -1
-	
+	round_results.clear()
+	_spawn_shape_selection_window()
