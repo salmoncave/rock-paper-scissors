@@ -1,9 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://ce1dcri84rts4"]
+[gd_scene load_steps=6 format=3 uid="uid://ce1dcri84rts4"]
 
 [ext_resource type="Theme" uid="uid://dqjnhgawjp3o2" path="res://game/windows/shape_selection_window_theme.tres" id="1_fu7sn"]
 [ext_resource type="Script" uid="uid://v8a0sq8i8ecl" path="res://main_menu.gd" id="2_glbon"]
-[ext_resource type="Material" uid="uid://2ccomjrh6yf8" path="res://common/shaders/background_jitter_shader_material.tres" id="2_jix8l"]
 [ext_resource type="Texture2D" uid="uid://cxi1ha76yclcb" path="res://common/sprites/Space Background (9).png" id="3_glbon"]
+[ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/shaders/jitter_shader.gdshader" id="3_jix8l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glbon"]
+shader = ExtResource("3_jix8l")
+shader_parameter/shaking = true
+shader_parameter/amplitude = 1.5
+shader_parameter/noise_scale = 50.0
+shader_parameter/noise_speed = 2.0
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -23,8 +30,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="ControlRoot"]
-material = ExtResource("2_jix8l")
+[node name="BackgroundTextureRect" type="TextureRect" parent="ControlRoot"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_glbon")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,6 +58,7 @@ layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ControlRoot/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 theme_type_variation = &"RichTextLabelTitle"
 text = "Rock, Paper, Scissors"
 fit_content = true
@@ -58,17 +67,34 @@ horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ControlRoot/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 2
+theme_override_constants/separation = 64
+alignment = 1
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ControlRoot/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Rounds:"
+theme_type_variation = &"RichTextLabelTitle"
+theme_override_font_sizes/normal_font_size = 64
+text = "Wins Needed:"
 fit_content = true
 autowrap_mode = 0
 
 [node name="SpinBox" type="SpinBox" parent="ControlRoot/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 8
+min_value = 1.0
+max_value = 50.0
+value = 2.0
+alignment = 1
+custom_arrow_step = 1.0
 
-[node name="Button" type="Button" parent="ControlRoot/MarginContainer/VBoxContainer"]
+[node name="StartGameButton" type="Button" parent="ControlRoot/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(196, 64)
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 2
+theme_override_font_sizes/font_size = 32
 text = "Start Game"
+
+[connection signal="value_changed" from="ControlRoot/MarginContainer/VBoxContainer/HBoxContainer/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="pressed" from="ControlRoot/MarginContainer/VBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]

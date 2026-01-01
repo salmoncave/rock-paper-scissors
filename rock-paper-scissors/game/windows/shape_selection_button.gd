@@ -1,3 +1,10 @@
+##[ShapeSelectionButton] is resposible for giving the player interaction with
+##each GameShape, can be generated programatically if more GameShapes are added.
+##
+##
+##
+##Currently [ShapeSelectionButton]s are just set on ready and supplied manually
+##within the [ShapeSelectionWindow]
 class_name ShapeSelectionButton extends Control
 
 signal shape_selection_button_pressed(chosen_button: Button, chosen_shape: Main.GameShapes)
@@ -30,16 +37,20 @@ func _ready() -> void:
 	hover_background_00.visible = false
 	hover_background_01.visible = false
 
+##Activates the button when it's been selected for the [ShapeSelectionWindow]
 func activate() -> void:
 	hover_background_00.modulate = active_modulate_00
 	hover_background_01.modulate = active_modulate_01
 	hover_gpu_particles_2d.emitting = true
 
+##Deactivates the button when it's been selected for the [ShapeSelectionWindow]
 func deactivate() -> void:
 	_stop_active_hover_tween()
 	_start_passive_hover_tween_loop()
 	hover_gpu_particles_2d.emitting = false
 
+##Sets the button for a shape, can be done programmatically instead 
+##if more GameShapes are added
 func _create_selection_button_for_shape(selected_shape: Main.GameShapes) -> void:
 	button_icon.texture = shapes_icons[selected_shape]
 	shape = selected_shape
@@ -49,18 +60,13 @@ func _on_button_pressed() -> void:
 	shape_selection_button_pressed.emit(self, shape)
 	
 
+##Starts the passive hover loop during shape selection
 func _start_passive_hover_tween_loop() -> void:
 	_stop_passive_hover_tween_loop()
 	
 	var hover_pos_offset_y: float = 16.0
-	#var coinflip := randi_range(0, 1)
 	var starting_pos_offset_y: float = 0.0
 	var tween_duration: float = 0.75
-	
-	#if coinflip == 0:
-		#starting_pos_offset_y = -hover_pos_offset_y
-	#else:
-		#starting_pos_offset_y = hover_pos_offset_y
 	
 	starting_pos_offset_y = randf_range(-hover_pos_offset_y, hover_pos_offset_y)
 	
@@ -76,12 +82,14 @@ func _start_passive_hover_tween_loop() -> void:
 		button_icon, "position:y", hover_pos_offset_y, tween_duration
 	)
 
+##Ends the passive hover loop when a button is deactivated
 func _stop_passive_hover_tween_loop() -> void:
 	if _passive_hover_tween and _passive_hover_tween.is_running():
 		_passive_hover_tween.kill()
 		button_icon.position = Vector2.ZERO
 	
 
+##Tweens various nodes on the button after it has been activated
 func _start_active_hover_tween() -> void:
 	_stop_active_hover_tween()
 	
@@ -127,6 +135,7 @@ func _start_active_hover_tween() -> void:
 		).as_relative()
 		
 
+##Stops the tween started during activation
 func _stop_active_hover_tween() -> void:
 	if _active_hover_tween and _active_hover_tween.is_running():
 		_active_hover_tween.kill()
@@ -136,7 +145,6 @@ func _stop_active_hover_tween() -> void:
 		hover_background_01.scale = Vector2.ZERO
 		
 	
-
 
 func _on_button_mouse_entered() -> void:
 	hover_background_00.modulate = hover_modulate_00

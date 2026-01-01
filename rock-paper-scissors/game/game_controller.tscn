@@ -1,26 +1,27 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmsubkaixbygt"]
+[gd_scene load_steps=6 format=3 uid="uid://dmsubkaixbygt"]
 
 [ext_resource type="Script" uid="uid://dgufc4bto0sgt" path="res://game/game_controller.gd" id="1_2bjpj"]
 [ext_resource type="PackedScene" uid="uid://bxqtdwvgrb53d" path="res://game/windows/shape_selection_window.tscn" id="2_eb65f"]
 [ext_resource type="PackedScene" uid="uid://cq1fvxfr2eew8" path="res://game/windows/round_process_window.tscn" id="3_5517d"]
-[ext_resource type="PackedScene" uid="uid://d2aisb4em4voi" path="res://game/windows/match_result_window.tscn" id="4_4kcpm"]
 [ext_resource type="Texture2D" uid="uid://bb1wr6jpwm3oe" path="res://common/sprites/Space Background (6).png" id="5_4kcpm"]
 [ext_resource type="Material" uid="uid://2ccomjrh6yf8" path="res://common/shaders/background_jitter_shader_material.tres" id="5_rmbjm"]
 
-[node name="GameController" type="Node"]
+[node name="GameController" type="Control"]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_2bjpj")
-total_wins_needed = 1
-round_selection_seconds = 5.0
 shape_selection_window_packed_scene = ExtResource("2_eb65f")
 round_process_window_packed_scene = ExtResource("3_5517d")
-match_result_window_packed_scene = ExtResource("4_4kcpm")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-unique_name_in_owner = true
-
-[node name="TextureRectBackground" type="TextureRect" parent="CanvasLayer"]
+[node name="TextureRectBackground" type="TextureRect" parent="."]
 unique_name_in_owner = true
 material = ExtResource("5_rmbjm")
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

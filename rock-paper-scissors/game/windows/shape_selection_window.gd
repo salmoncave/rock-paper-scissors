@@ -1,23 +1,49 @@
+##The [ShapeSelectionWindow] is primarily responsible for allowing the player to
+##select a GameShape, then communicating that information to the [GameController]
+##
+##
+##
+##If this is added to a multiplayer controller, this window should remain client
+##side as all the processing can be done from within each player's [GameController].
 class_name ShapeSelectionWindow extends Control
 
-signal confirmed_shape_selection(player_id: int, confirmed_shape: Main.GameShapes)
+##Emitted when the player selects a GameShape, will need to be passed a player id
+##if this is added to a multiplayer controller
+signal confirmed_shape_selection(confirmed_shape: Main.GameShapes)
+#signal confirmed_shape_selection(player_id: int, confirmed_shape: Main.GameShapes)
+
+##Emitted whenever the selection tween finishes, and is used by [GameController]
+##to progress to the next round
 signal selection_tween_finished
 
-#var player_id : int = -1
-
+##Container to deterimine GameShapes
 @onready var shape_button_h_box_container: HBoxContainer = %ShapeButtonHBoxContainer
+##Title [RichTextLabel]
 @onready var rich_text_label_title: RichTextLabel = %RichTextLabelTitle
+##Timer [RichTextLabel]
 @onready var rich_text_label_timer: RichTextLabel = %RichTextLabelTimer
+##[Button] used for confirming the player's GameShape
 @onready var confirm_button: Button = %ConfirmButton
+##[Button] for quitting out of the match by concession
 @onready var concede_button: Button = %ConcedeButton
+##[Timer] that automatically choses for the player if they take too long
 @onready var selection_timer: Timer = %SelectionTimer
 
+##The currently selected GameShape, used to determine the chosen shape
+##when the confirm button is pressed
 var selected_shape := Main.GameShapes.ROCK
+
+##The number of seconds a player has to select a GameShape, set by [GameController]
 var round_selection_seconds: float = 15.0
 
+##Determines whether or not a GameShape has been selected for confirmation
 var _has_selected_shape: bool = false
 
+##The buttons assigned to each shape, [ShapeSelectionButton]s are currently set manually
+##but they could be done programmatically if enough GameShapes are added
 var _selection_buttons: Array[ShapeSelectionButton]
+
+##The active [ShapeSelectionButton]
 var _active_button: ShapeSelectionButton = null
 
 func _ready() -> void:
@@ -28,8 +54,13 @@ func _ready() -> void:
 		_selection_buttons[0].button_icon.material.set_shader_parameter("shaking", true)
 
 func _physics_process(_delta: float) -> void:
+	if selection_timer.is_stopped():
+		return
+	
 	rich_text_label_timer.text = _get_timer_text(selection_timer.time_left)
 
+##Determines what happens whenever a [ShapeSelectionButton] is pressed, coordinates
+##properties and animations.
 func _on_shape_selection_button_pressed(button: ShapeSelectionButton, shape: Main.GameShapes) -> void:
 	_deactivate_buttons(_selection_buttons, button)
 	button.activate()
@@ -39,6 +70,7 @@ func _on_shape_selection_button_pressed(button: ShapeSelectionButton, shape: Mai
 	_has_selected_shape = true
 	
 
+##Called when [member confirm_button] is pressed
 func _on_confirm_button_pressed() -> void:
 	if _has_selected_shape:
 		if not selection_timer.is_stopped():
@@ -64,13 +96,16 @@ func _on_confirm_button_pressed() -> void:
 		push_error("NO SELECTED SHAPE")
 	
 
+##Deactivates other [ShapeSelectionButton] when one is confirmed,
+##helps avoid selection when it's not necessary
 func _deactivate_buttons(array: Array[ShapeSelectionButton], excluded_button: ShapeSelectionButton) -> void:
 	for button in array:
 		if button != excluded_button and button.active:
 			button.active = false
 			button.deactivate()
-		
+	
 
+##Tweens a [ShapeSelectionButton] whenever it is confirmed for selection
 func _tween_button_selection(button: ShapeSelectionButton) -> void:
 	var button_desired_pos_y := -512.0
 	var button_scale := Vector2.ONE * 1.25
@@ -95,13 +130,8 @@ func _tween_button_selection(button: ShapeSelectionButton) -> void:
 	await selection_tween.finished
 	selection_tween_finished.emit()
 	
-	#texture_rect_background.material.set_shader_parameter("shaking", false)
-	#var fade_tween := create_tween()
-	
-	#fade_tween.tween_property(
-		#texture_rect_background, "self_modulate", Color(0.0, 0.0, 0.0, 1.0), scale_duration
-	#)
 
+##Tweens [ShapeSelectionButton]s that aren't selected whenever another is confirmed for selection
 func _tween_inactive_button(button: ShapeSelectionButton) -> void:
 	var tween_duration := 0.5
 	var inactive_button_tween := create_tween()
@@ -112,11 +142,15 @@ func _tween_inactive_button(button: ShapeSelectionButton) -> void:
 	inactive_button_tween.tween_property(
 		button, "modulate", Color(1.0, 0.0, 0.0, 0.0), tween_duration
 	)
+	
 
+##Gets the text for the timer, shows seconds and miliseconds
 func _get_timer_text(time_seconds: float) -> String:
 	return str("%.2f" % time_seconds).replace(".", ":")
+	
 
-
+##Called when [selection_timer] times out, automatically confirms a selection
+##if one hasn't already been confirmed
 func _on_selection_timer_timeout() -> void:
 	if _has_selected_shape:
 		return
@@ -124,3 +158,4 @@ func _on_selection_timer_timeout() -> void:
 	_has_selected_shape = true
 	selected_shape = _active_button.shape
 	_on_confirm_button_pressed()
+	
