@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3ocmlfgxmq0c"
-path="res://.godot/imported/bowtie.png-1d4c06584990bcecd73e40fd4428e71e.ctex"
+uid="uid://cxi1ha76yclcb"
+path="res://.godot/imported/Space Background (9).png-71a554dd846db1dd8d871c171a378c7a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://common/sprites/bowtie.png"
-dest_files=["res://.godot/imported/bowtie.png-1d4c06584990bcecd73e40fd4428e71e.ctex"]
+source_file="res://common/sprites/Space Background (9).png"
+dest_files=["res://.godot/imported/Space Background (9).png-71a554dd846db1dd8d871c171a378c7a.ctex"]
 
 [params]
 

@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://2ccomjrh6yf8"]
+
+[ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/shaders/jitter_shader.gdshader" id="1_r7vec"]
+
+[resource]
+shader = ExtResource("1_r7vec")
+shader_parameter/shaking = true
+shader_parameter/amplitude = 1.5
+shader_parameter/noise_scale = 50.0
+shader_parameter/noise_speed = 2.0
