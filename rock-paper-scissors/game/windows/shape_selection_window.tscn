@@ -1,18 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxqtdwvgrb53d"]
+[gd_scene load_steps=4 format=3 uid="uid://bxqtdwvgrb53d"]
 
 [ext_resource type="Theme" uid="uid://dqjnhgawjp3o2" path="res://game/windows/shape_selection_window_theme.tres" id="1_e8ho0"]
-[ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/shaders/jitter_shader.gdshader" id="1_lifgb"]
-[ext_resource type="Texture2D" uid="uid://bb1wr6jpwm3oe" path="res://common/sprites/Space Background (6).png" id="2_e8ho0"]
 [ext_resource type="Script" uid="uid://ej750cb8id0u" path="res://game/windows/shape_selection_window.gd" id="2_i8n8p"]
 [ext_resource type="PackedScene" uid="uid://b66tcgqv117fd" path="res://game/windows/shape_selection_button.tscn" id="4_yn6nj"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_i8n8p"]
-resource_local_to_scene = true
-shader = ExtResource("1_lifgb")
-shader_parameter/shaking = true
-shader_parameter/amplitude = 1.5
-shader_parameter/noise_scale = 50.0
-shader_parameter/noise_speed = 2.0
 
 [node name="ShapeSelectionWindow" type="Control"]
 layout_mode = 3
@@ -23,17 +13,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_e8ho0")
 script = ExtResource("2_i8n8p")
-
-[node name="TextureRectBackground" type="TextureRect" parent="."]
-unique_name_in_owner = true
-material = SubResource("ShaderMaterial_i8n8p")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_e8ho0")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -120,4 +99,5 @@ wait_time = 30.0
 one_shot = true
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer2/ConfirmButton" to="." method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ConcedeButton" to="." method="_on_concede_button_pressed"]
 [connection signal="timeout" from="SelectionTimer" to="." method="_on_selection_timer_timeout"]

@@ -16,6 +16,9 @@ signal confirmed_shape_selection(confirmed_shape: Main.GameShapes)
 ##to progress to the next round
 signal selection_tween_finished
 
+##Emitted whenever the user wishes to return to the main menu (concede)
+signal quit_to_main_menu_requested
+
 ##Container to deterimine GameShapes
 @onready var shape_button_h_box_container: HBoxContainer = %ShapeButtonHBoxContainer
 ##Title [RichTextLabel]
@@ -159,3 +162,7 @@ func _on_selection_timer_timeout() -> void:
 	selected_shape = _active_button.shape
 	_on_confirm_button_pressed()
 	
+
+
+func _on_concede_button_pressed() -> void:
+	quit_to_main_menu_requested.emit()

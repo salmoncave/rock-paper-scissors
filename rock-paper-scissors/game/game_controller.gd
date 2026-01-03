@@ -76,6 +76,10 @@ func _spawn_shape_selection_window() -> ShapeSelectionWindow:
 		_on_shape_selection_window_selection_tween_finished
 	)
 	
+	new_shape_selection_window.quit_to_main_menu_requested.connect(
+		_on_quit_to_main_requested
+	)
+	
 	_active_shape_selection_window = new_shape_selection_window
 	
 	return new_shape_selection_window
@@ -104,7 +108,7 @@ func _spawn_round_process_window() -> RoundProcessWindow:
 	)
 	
 	new_round_process_window.quit_to_main_requested.connect(
-		_on_round_process_window_quit_to_main_requested
+		_on_quit_to_main_requested
 	)
 	
 	add_child(new_round_process_window)
@@ -149,7 +153,7 @@ func _on_round_process_window_replay_requested() -> void:
 	_reset_game()
 	
 
-func _on_round_process_window_quit_to_main_requested() -> void:
+func _on_quit_to_main_requested() -> void:
 	main_menu_requested.emit()
 	
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://ce1dcri84rts4"]
 
 [ext_resource type="Theme" uid="uid://dqjnhgawjp3o2" path="res://game/windows/shape_selection_window_theme.tres" id="1_fu7sn"]
-[ext_resource type="Script" uid="uid://v8a0sq8i8ecl" path="res://main_menu.gd" id="2_glbon"]
+[ext_resource type="Script" uid="uid://v8a0sq8i8ecl" path="res://game/main_menu.gd" id="2_glbon"]
 [ext_resource type="Texture2D" uid="uid://cxi1ha76yclcb" path="res://common/sprites/Space Background (9).png" id="3_glbon"]
 [ext_resource type="Shader" uid="uid://cqk5f2vm7fcd0" path="res://common/shaders/jitter_shader.gdshader" id="3_jix8l"]
 
